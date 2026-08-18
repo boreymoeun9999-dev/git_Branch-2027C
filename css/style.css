@@ -28,10 +28,24 @@ body {
     radial-gradient(circle at top, rgba(139, 92, 246, 0.28), transparent 30%),
     linear-gradient(135deg, #090d1a 0%, #111827 30%, #0f172a 100%);
   color: var(--text);
+  animation: backgroundShift 12s ease-in-out infinite alternate;
+}
+
+@keyframes backgroundShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
 
 a {
   text-decoration: none;
+}
+
+a:active {
+  transform: scale(0.98);
 }
 
 img {
@@ -80,13 +94,39 @@ img {
 }
 
 .menu a {
+  position: relative;
   color: var(--muted);
   font-size: 0.95rem;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.menu a:hover {
+.menu a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 100%;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), var(--primary));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.menu a:hover,
+.menu a:focus-visible,
+.menu a:active,
+.menu a.active {
   color: var(--text);
+  transform: translateY(-1px);
+}
+
+.menu a:hover::after,
+.menu a:focus-visible::after,
+.menu a:active::after,
+.menu a.active::after {
+  transform: scaleX(1);
 }
 
 .button {
@@ -99,12 +139,29 @@ img {
   color: white;
   font-weight: 700;
   box-shadow: 0 12px 28px rgba(255, 107, 107, 0.35);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  animation: pulseButton 2.5s ease-in-out infinite;
 }
 
-.button:hover {
-  transform: translateY(-2px);
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-3px) scale(1.02);
   box-shadow: 0 18px 32px rgba(255, 107, 107, 0.4);
+  filter: brightness(1.06);
+}
+
+.button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+@keyframes pulseButton {
+  0%,
+  100% {
+    box-shadow: 0 12px 28px rgba(255, 107, 107, 0.35);
+  }
+  50% {
+    box-shadow: 0 16px 34px rgba(139, 92, 246, 0.4);
+  }
 }
 
 .button-small {
@@ -150,6 +207,18 @@ img {
 .hero-text h1 {
   margin: 0;
   font-size: clamp(2.7rem, 5vw, 5rem);
+  animation: slideUp 0.9s ease both;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .lead {
@@ -158,6 +227,7 @@ img {
   font-size: 1.08rem;
   line-height: 1.8;
   max-width: 560px;
+  animation: slideUp 1.1s ease 0.1s both;
 }
 
 .hero-actions {
@@ -197,6 +267,18 @@ img {
   display: flex;
   justify-content: center;
   align-items: center;
+  animation: floatIn 1.2s ease both;
+}
+
+@keyframes floatIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .image-card {
@@ -205,6 +287,17 @@ img {
   overflow: hidden;
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
+  animation: cardFloat 4.5s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .image-card img {
@@ -222,6 +315,17 @@ img {
   background: rgba(17, 24, 45, 0.88);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
+  animation: floatCard 3.8s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
 }
 
 .tag {
@@ -276,6 +380,34 @@ img {
   border-radius: 22px;
   overflow: hidden;
   box-shadow: var(--shadow);
+  transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+  animation: fadeInCard 0.9s ease both;
+}
+
+.story-card:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.story-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.story-card:hover,
+.story-card:focus-within {
+  transform: translateY(-8px) scale(1.01);
+  border-color: rgba(255, 183, 3, 0.5);
+  box-shadow: 0 22px 38px rgba(0, 0, 0, 0.35);
 }
 
 .story-card img {
